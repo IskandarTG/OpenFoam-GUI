@@ -28,8 +28,10 @@ private slots:
 
     QString retrievePath(QString pathFile);
 
-private:
+    void on_MainWindow_destroyed();
 
+private:
+    void saveBlenderPath();
     Ui::MainWindow *ui;
 };
 #endif // MAINWINDOW_H

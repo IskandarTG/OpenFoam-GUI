@@ -17,6 +17,8 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
+    //Call Saving Functions before deleting the ui
+    saveBlenderPath();
     delete ui;
 }
 
@@ -26,13 +28,28 @@ QString MainWindow::retrievePath(QString pathFile)
     QDir dir(QCoreApplication::applicationDirPath());
     QString fileLoc = dir.relativeFilePath(pathFile);
     QFile file(fileLoc);
-    if(file.open(QIODevice::ReadWrite | QIODevice::Text))
+    if(file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
         QTextStream stream(&file);
         stream >> res;
         file.close();
     }
     return res;
+}
+
+void MainWindow::saveBlenderPath()
+{
+    QLineEdit* blenderPath = MainWindow::centralWidget()->findChild<QLineEdit*>("blenderPath");
+    QDir dir(QCoreApplication::applicationDirPath());
+    QString fileLoc = dir.relativeFilePath("bPath.conf");
+    QString pathString = blenderPath->text();
+    QFile file(fileLoc);
+    if(file.open(QIODevice::WriteOnly | QIODevice::Text))
+    {
+        QTextStream stream(&file);
+        stream << pathString;
+        file.close();
+    }
 }
 
 void MainWindow::on_nextButton_clicked()
@@ -65,14 +82,13 @@ void MainWindow::on_openBlenderButton_clicked()
 
 void MainWindow::on_blenderPath_textChanged(const QString &arg1)
 {
-    QDir dir(QCoreApplication::applicationDirPath());
-    QString fileLoc = dir.relativeFilePath("bPath.conf");
-    QFile file(fileLoc);
-    if(file.open(QIODevice::ReadWrite | QIODevice::Text))
-    {
-        QTextStream stream(&file);
-        stream << arg1;
-        file.close();
-    }
+
+
+}
+
+
+void MainWindow::on_MainWindow_destroyed()
+{
+
 }
 
