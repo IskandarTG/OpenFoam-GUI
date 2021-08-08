@@ -53,7 +53,7 @@
     <item row="0" column="0" colspan="2">
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="tab">
        <property name="toolTip">
@@ -94,7 +94,7 @@
          <string>Open</string>
         </property>
        </widget>
-       <widget class="QLabel" name="label">
+       <widget class="QLabel" name="bDirLabel">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -104,7 +104,69 @@
          </rect>
         </property>
         <property name="text">
-         <string>Enter Path to Blender executable:</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter Path to Blender Directory:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="saveBlenderPath">
+        <property name="geometry">
+         <rect>
+          <x>350</x>
+          <y>610</y>
+          <width>89</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Save</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="projectPath">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>520</y>
+          <width>241</width>
+          <height>25</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="pDirLabel">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>500</y>
+          <width>241</width>
+          <height>17</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter Path to Project Directory:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="openProjectButton">
+        <property name="geometry">
+         <rect>
+          <x>260</x>
+          <y>520</y>
+          <width>89</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Open</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="saveProjectPath">
+        <property name="geometry">
+         <rect>
+          <x>350</x>
+          <y>520</y>
+          <width>89</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Save</string>
         </property>
        </widget>
       </widget>
@@ -112,22 +174,6 @@
        <attribute name="title">
         <string>Geometry</string>
        </attribute>
-       <widget class="QLabel" name="label_2">
-        <property name="geometry">
-         <rect>
-          <x>490</x>
-          <y>310</y>
-          <width>221</width>
-          <height>111</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:48pt; font-weight:600; text-decoration: underline;&quot;&gt;2&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="textFormat">
-         <enum>Qt::RichText</enum>
-        </property>
-       </widget>
       </widget>
       <widget class="QWidget" name="tab_2">
        <attribute name="title">
@@ -154,6 +200,16 @@
        <attribute name="title">
         <string>Anfangs- Randbedingungen</string>
        </attribute>
+       <widget class="QTreeView" name="condition_explorer">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>331</width>
+          <height>621</height>
+         </rect>
+        </property>
+       </widget>
       </widget>
      </widget>
     </item>

@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "ui_mainwindow.h"
 #include <QMainWindow>
 
 QT_BEGIN_NAMESPACE
@@ -28,10 +29,21 @@ private slots:
 
     QString retrievePath(QString pathFile);
 
-    void on_MainWindow_destroyed();
+    void on_saveBlenderPath_clicked();
+
+    void allowSaveButton(QPushButton *,QLineEdit *,QString);
+    void on_openProjectButton_clicked();
+
+    void on_projectPath_textChanged(const QString &arg1);
+
+    void on_saveProjectPath_clicked();
+
+    void changeTreeViewRoot(QString);
 
 private:
     void saveBlenderPath();
     Ui::MainWindow *ui;
+    QString pPath = "pPath.conf";
+    QString bPath = "bPath.conf";
 };
 #endif // MAINWINDOW_H
