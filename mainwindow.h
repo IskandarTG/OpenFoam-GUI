@@ -1,8 +1,15 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "ui_mainwindow.h"
 #include <QMainWindow>
+#include <QMessageBox>
+#include <QLineEdit>
+#include <QFile>
+#include <QTextStream>
+#include <QProcess>
+#include <QDir>
+#include <QDebug>
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -17,33 +24,17 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_nextButton_clicked();
+    void on_Next_Button_clicked();
+    void on_Previous_Button_clicked();
+    void on_CheckProjectDir_Button_clicked();
+    void on_SetProjectDir_Button_clicked();
+    void on_Mesh_Button_clicked();
 
-    void on_tabWidget_currentChanged(int index);
+    void on_CheckBleDir_Button_clicked();
 
-    void on_prevButton_clicked();
-
-    void on_openBlenderButton_clicked();
-
-    void on_blenderPath_textChanged(const QString &arg1);
-
-    QString retrievePath(QString pathFile);
-
-    void on_saveBlenderPath_clicked();
-
-    void allowSaveButton(QPushButton *,QLineEdit *,QString);
-    void on_openProjectButton_clicked();
-
-    void on_projectPath_textChanged(const QString &arg1);
-
-    void on_saveProjectPath_clicked();
-
-    void changeTreeViewRoot(QString);
+    void on_SetBleDir_Button_clicked();
 
 private:
-    void saveBlenderPath();
     Ui::MainWindow *ui;
-    QString pPath = "pPath.conf";
-    QString bPath = "bPath.conf";
 };
 #endif // MAINWINDOW_H

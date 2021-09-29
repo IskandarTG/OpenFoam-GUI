@@ -1,169 +1,101 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <QFileDialog>
-#include <QTextStream>
-#include <QFile>
-#include <QDataStream>
-#include <QFileSystemModel>
-#include <QDebug>
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    //Load Text into the Path labels
-    ui->blenderPath->setText(retrievePath(bPath));
-    ui->projectPath->setText(retrievePath(pPath));
-
-
-    //Setups File Tree View with Saved Project Path
-    changeTreeViewRoot(pPath);
 }
 
 MainWindow::~MainWindow()
 {
-    //Call Saving Functions before deleting the ui
-    on_saveBlenderPath_clicked();
-    on_saveProjectPath_clicked();
-
     delete ui;
 }
 
-QString MainWindow::retrievePath(QString pathFile)
-{
-    QString res;
-    QFile file(pathFile);
-    if(file.open(QIODevice::ReadOnly | QIODevice::Text))
-    {
-        QTextStream stream(&file);
-        res = stream.readLine();
-        file.close();
-    }
-    return res;
-}
-
-void MainWindow::saveBlenderPath()
-{
-    QLineEdit* blenderPath = MainWindow::centralWidget()->findChild<QLineEdit*>("blenderPath");
-    QDir dir(QCoreApplication::applicationDirPath());
-    QString fileLoc = dir.relativeFilePath(bPath);
-    QString pathString = blenderPath->text();
-    QFile file(fileLoc);
-    if(file.open(QIODevice::WriteOnly | QIODevice::Text))
-    {
-        QTextStream stream(&file);
-        stream << pathString;
-        file.close();
-    }
-
-    allowSaveButton(ui->saveProjectPath,ui->blenderPath,bPath);
-}
-
-void MainWindow::on_nextButton_clicked()
+void MainWindow::on_Next_Button_clicked()
 {
     ui->tabWidget->setCurrentIndex(ui->tabWidget->currentIndex()+1);
 }
 
-
-void MainWindow::on_tabWidget_currentChanged(int index)
+void MainWindow::on_Previous_Button_clicked()
 {
-
+    ui->tabWidget->setCurrentIndex(ui->tabWidget->currentIndex()-1);
 }
 
 
-void MainWindow::on_prevButton_clicked()
+void MainWindow::on_CheckProjectDir_Button_clicked()
 {
-     ui->tabWidget->setCurrentIndex(ui->tabWidget->currentIndex()-1);
+    QMessageBox msgBox;
+    msgBox.setText("Your current Project Directory is:");
+    msgBox.setInformativeText(QDir::currentPath());
+    msgBox.exec();
+}
+
+void MainWindow::on_SetProjectDir_Button_clicked()
+{
+    QDir::setCurrent(ui->ProjectDir->text());
 }
 
 
-void MainWindow::on_openBlenderButton_clicked()
-{
-  QFileDialog dialog(this);
-  dialog.setFileMode(QFileDialog::Directory);
-  QString dirName = dialog.getExistingDirectory(this,"","/home/");
-  ui->blenderPath->setText(dirName);
-}
-
-void MainWindow::on_openProjectButton_clicked()
-{
-    QFileDialog dialog(this);
-    dialog.setFileMode(QFileDialog::Directory);
-    QString dirName = dialog.getExistingDirectory(this,"","/home/");
-    ui->projectPath->setText(dirName);
-}
-
-
-void MainWindow::on_blenderPath_textChanged(const QString &arg1)
-{
-    allowSaveButton(ui->saveProjectPath,ui->blenderPath,bPath);
-}
-
-
-void MainWindow::on_projectPath_textChanged(const QString &arg1)
-{
-    allowSaveButton(ui->saveProjectPath,ui->projectPath,pPath);
-}
-
-void MainWindow::on_saveBlenderPath_clicked()
+void MainWindow::on_Mesh_Button_clicked()
 {
     /*
-    * Saves the Blenderpath in the QLineEdit blenderpath to the file bPath.conf
+    QProcess Mesh_Process;
+    ui->Mesh_Output->clear();
+    Mesh_Process.setCurrentReadChannel(QProcess::StandardOutput);
+    Mesh_Process.start("blockMesh");
+    //ui->Mesh_Output->append(Mesh_Process.readAllStandardOutput());
+    //QProcess* process = qobject_cast<QProcess*>(sender());
+    //   if (process)
+    //       ui->Mesh_Output->append(process->readAllStandardOutput());
+    Mesh_Process.waitForFinished(-1);
     */
-
-    QFile file(bPath);
-    if(file.open(QIODevice::ReadWrite | QIODevice::Truncate))
-    {
-            file.write(ui->blenderPath->text().toUtf8());
-            file.close();
-    }
-    allowSaveButton(ui->saveProjectPath,ui->blenderPath,bPath);
+    ui->Mesh_Output->clear();
+    ui->Mesh_Error->clear();
+    QStringList args;
+    args << "-case" << QDir::currentPath();
+    QProcess *meshProcess = new QProcess();
+    meshProcess->setCurrentReadChannel(QProcess::StandardError);
+    meshProcess->start("blockMesh",args);
+    meshProcess->waitForFinished();
+    QString output(meshProcess->readAllStandardOutput());
+    QString error(meshProcess->readAllStandardError());
+    if(error == "")
+        error = "No errors!";
+    ui->Mesh_Output->append(output);
+    ui->Mesh_Error->append(error);
 }
 
-void MainWindow::on_saveProjectPath_clicked()
+void MainWindow::on_CheckBleDir_Button_clicked()
 {
-    QFile file(pPath);
-    if(file.open(QIODevice::ReadWrite | QIODevice::Truncate))
+    QFile file("Blender_Directory.txt");
+    if(!file.exists())
     {
-            file.write(ui->projectPath->text().toUtf8());
-            file.close();
+        qCritical() << "Directory not found, set a directory first";
     }
-    allowSaveButton(ui->saveProjectPath,ui->projectPath,pPath);
-    changeTreeViewRoot(pPath);
+
+    if(!file.open(QIODevice::ReadOnly))
+    {
+        qCritical() << file.errorString();
+    }
+    QTextStream stream(&file);
+    QMessageBox msgBox;
+    msgBox.setText("Your current Blender Directory is:");
+    msgBox.setInformativeText(stream.readAll());
+    msgBox.exec();
 }
 
-void MainWindow::allowSaveButton(QPushButton *button,QLineEdit *lineEdit,QString _file)
+
+void MainWindow::on_SetBleDir_Button_clicked()
 {
-    QFile file(_file);
-    if(file.open(QIODevice::ReadWrite))
+    QFile file("Blender_Directory.txt");
+    if(!file.open(QIODevice::WriteOnly))
     {
-        QString temp;
-        QTextStream stream(&file);
-        temp = stream.readLine();
-        if(temp.compare(lineEdit->text())==0)
-        {
-            button->setEnabled(false);
-        }
-        else
-        {
-            button->setEnabled(true);
-        }
-        file.close();
+        qCritical() << file.errorString();
     }
+    QTextStream stream(&file);
+    stream << ui->BleDir->text();
+    file.close();
 }
 
-void MainWindow::changeTreeViewRoot(QString _file)
-{
-    QFile file(_file);
-    QString temp;
-    if(file.open(QIODevice::ReadOnly))
-    {
-        QTextStream stream(&file);
-
-        temp = stream.readLine();
-    }
-    QFileSystemModel *model = new QFileSystemModel;
-    model->setRootPath(temp);
-    ui->condition_explorer->setModel(model);
-    ui->condition_explorer->setRootIndex(model->index(temp));
-}
