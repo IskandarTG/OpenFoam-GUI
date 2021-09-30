@@ -22,6 +22,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    QString projectPath;
 
 private slots:
     void on_Next_Button_clicked();

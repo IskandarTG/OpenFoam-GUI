@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>640</width>
-    <height>480</height>
+    <width>968</width>
+    <height>572</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -20,8 +20,60 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout_3">
-    <item>
+   <layout class="QGridLayout" name="gridLayout_2">
+    <item row="1" column="0">
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QPushButton" name="Previous_Button">
+        <property name="text">
+         <string>Previous</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="Next_Button">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Next</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_3">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>25</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>?</string>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>4</width>
+          <height>4</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="0" column="0">
      <widget class="QTabWidget" name="tabWidget">
       <property name="enabled">
        <bool>true</bool>
@@ -30,13 +82,27 @@
        <bool>true</bool>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>4</number>
       </property>
       <widget class="QWidget" name="Setup_Tab">
        <attribute name="title">
         <string>Setup</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_5">
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_3">
+          <item>
+           <widget class="QLabel" name="label_3">
+            <property name="text">
+             <string>Anzahl an Versuchen</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QSpinBox" name="nrOfTests"/>
+          </item>
+         </layout>
+        </item>
         <item>
          <spacer name="verticalSpacer">
           <property name="orientation">
@@ -112,8 +178,29 @@
        <attribute name="title">
         <string>Geometry/Mesh</string>
        </attribute>
-       <layout class="QVBoxLayout" name="verticalLayout_4">
-        <item>
+       <layout class="QFormLayout" name="formLayout">
+        <item row="0" column="0">
+         <layout class="QGridLayout" name="gridLayout">
+          <item row="2" column="0">
+           <widget class="QPushButton" name="pushButton_2">
+            <property name="text">
+             <string>Open BlockMeshDict</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QPushButton" name="pushButton">
+            <property name="text">
+             <string>Blender</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QTreeView" name="treeView"/>
+          </item>
+         </layout>
+        </item>
+        <item row="0" column="1">
          <layout class="QVBoxLayout" name="verticalLayout_2">
           <item>
            <widget class="QPushButton" name="Mesh_Button">
@@ -154,37 +241,40 @@
        <attribute name="title">
         <string>Solver</string>
        </attribute>
+       <layout class="QGridLayout" name="gridLayout_3">
+        <item row="0" column="1">
+         <widget class="QComboBox" name="comboBox"/>
+        </item>
+        <item row="0" column="0">
+         <widget class="QTreeView" name="treeView_2"/>
+        </item>
+        <item row="1" column="1">
+         <widget class="QPushButton" name="pushButton_4">
+          <property name="text">
+           <string>Open</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QPushButton" name="pushButton_5">
+          <property name="text">
+           <string>Check Validity</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </widget>
       <widget class="QWidget" name="ARBedingungen_Tab">
        <attribute name="title">
         <string>Anfangs-/Randbedingungen</string>
        </attribute>
       </widget>
+      <widget class="QWidget" name="tab">
+       <attribute name="title">
+        <string>Solve</string>
+       </attribute>
+      </widget>
      </widget>
-    </item>
-    <item>
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <item>
-       <widget class="QPushButton" name="Previous_Button">
-        <property name="text">
-         <string>Previous</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="Next_Button">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Next</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
     </item>
    </layout>
   </widget>

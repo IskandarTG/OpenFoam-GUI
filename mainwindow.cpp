@@ -28,13 +28,13 @@ void MainWindow::on_CheckProjectDir_Button_clicked()
 {
     QMessageBox msgBox;
     msgBox.setText("Your current Project Directory is:");
-    msgBox.setInformativeText(QDir::currentPath());
+    msgBox.setInformativeText(projectPath);
     msgBox.exec();
 }
 
 void MainWindow::on_SetProjectDir_Button_clicked()
 {
-    QDir::setCurrent(ui->ProjectDir->text());
+    projectPath = ui->ProjectDir->text();
 }
 
 
@@ -54,7 +54,7 @@ void MainWindow::on_Mesh_Button_clicked()
     ui->Mesh_Output->clear();
     ui->Mesh_Error->clear();
     QStringList args;
-    args << "-case" << QDir::currentPath();
+    args << "-case" << projectPath;
     QProcess *meshProcess = new QProcess();
     meshProcess->setCurrentReadChannel(QProcess::StandardError);
     meshProcess->start("blockMesh",args);
