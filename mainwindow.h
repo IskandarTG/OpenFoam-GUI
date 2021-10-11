@@ -29,10 +29,8 @@ private slots:
     void on_Previous_Button_clicked();
     void on_CheckProjectDir_Button_clicked();
     void on_SetProjectDir_Button_clicked();
-    void on_Mesh_Button_clicked();
-
+    void on_BlockMesh_Button_clicked();
     void on_CheckBleDir_Button_clicked();
-
     void on_SetBleDir_Button_clicked();
 
 private:

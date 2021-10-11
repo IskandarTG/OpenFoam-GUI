@@ -38,7 +38,7 @@ void MainWindow::on_SetProjectDir_Button_clicked()
 }
 
 
-void MainWindow::on_Mesh_Button_clicked()
+void MainWindow::on_BlockMesh_Button_clicked()
 {
     /*
     QProcess Mesh_Process;
