@@ -34,7 +34,7 @@ void MainWindow::on_CheckProjectDir_Button_clicked()
 
 void MainWindow::on_SetProjectDir_Button_clicked()
 {
-    projectPath = ui->ProjectDir->text();
+    projectPath = ui->ProjectDir_LineEdit->text();
 }
 
 
@@ -95,7 +95,7 @@ void MainWindow::on_SetBleDir_Button_clicked()
         qCritical() << file.errorString();
     }
     QTextStream stream(&file);
-    stream << ui->BleDir->text();
+    stream << ui->BlenderDir_LineEdit->text();
     file.close();
 }
 
