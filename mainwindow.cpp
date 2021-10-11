@@ -6,6 +6,8 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    ui->Mesh_Error->hide();
+    ui->MeshError_Label->hide();
 }
 
 MainWindow::~MainWindow()
@@ -28,13 +30,42 @@ void MainWindow::on_CheckProjectDir_Button_clicked()
 {
     QMessageBox msgBox;
     msgBox.setText("Your current Project Directory is:");
-    msgBox.setInformativeText(projectPath);
+    msgBox.setInformativeText(projectPath.path());
     msgBox.exec();
 }
 
 void MainWindow::on_SetProjectDir_Button_clicked()
 {
-    projectPath = ui->ProjectDir_LineEdit->text();
+    QStringList path;
+    QFileDialog dialog(this);
+    dialog.setFileMode(QFileDialog::Directory);
+    dialog.setViewMode(QFileDialog::Detail);
+    if(dialog.exec())
+    {
+        path = dialog.selectedFiles();
+    }
+    qCritical() << path;
+    if(path.count() != 0)
+    {
+        projectPath.setPath(path.at(0));
+        ui->ProjectDir_LineEdit->setText(projectPath.path());
+        QDir meshPath(projectPath.path()+"/constant");
+        if(meshPath.exists())
+        {
+            QFileSystemModel *meshModel = new QFileSystemModel;
+            meshModel->setRootPath(meshPath.path());
+            ui->PolyMesh_TreeView->setModel(meshModel);
+            ui->PolyMesh_TreeView->setRootIndex(meshModel->index(meshPath.path()));
+        }
+        else
+        {
+            QMessageBox msgBox;
+            msgBox.setText("Your selected path is not a OpenFOAM project");
+            msgBox.exec();
+        }
+    }
+
+
 }
 
 
@@ -51,10 +82,11 @@ void MainWindow::on_BlockMesh_Button_clicked()
     //       ui->Mesh_Output->append(process->readAllStandardOutput());
     Mesh_Process.waitForFinished(-1);
     */
+
     ui->Mesh_Output->clear();
     ui->Mesh_Error->clear();
     QStringList args;
-    args << "-case" << projectPath;
+    args << "-case" << projectPath.path();
     QProcess *meshProcess = new QProcess();
     meshProcess->setCurrentReadChannel(QProcess::StandardError);
     meshProcess->start("blockMesh",args);
@@ -62,7 +94,15 @@ void MainWindow::on_BlockMesh_Button_clicked()
     QString output(meshProcess->readAllStandardOutput());
     QString error(meshProcess->readAllStandardError());
     if(error == "")
-        error = "No errors!";
+    {
+        ui->Mesh_Error->hide();
+        ui->MeshError_Label->hide();
+    }
+    else
+    {
+        ui->Mesh_Error->show();
+        ui->MeshError_Label->show();
+    }
     ui->Mesh_Output->append(output);
     ui->Mesh_Error->append(error);
 }

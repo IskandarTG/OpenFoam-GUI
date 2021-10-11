@@ -9,6 +9,8 @@
 #include <QProcess>
 #include <QDir>
 #include <QDebug>
+#include <QFileSystemModel>
+#include <QFileDialog>
 
 
 QT_BEGIN_NAMESPACE
@@ -22,7 +24,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    QString projectPath;
+    QDir projectPath;
 
 private slots:
     void on_Next_Button_clicked();
