@@ -30,7 +30,7 @@
        <bool>true</bool>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="Setup_Tab">
        <attribute name="title">
@@ -320,7 +320,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_3">
+       <widget class="QPushButton" name="HelpWindow_Button">
         <property name="enabled">
          <bool>true</bool>
         </property>

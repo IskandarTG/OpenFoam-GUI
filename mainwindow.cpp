@@ -6,12 +6,15 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    setAttribute(Qt::WA_DeleteOnClose);
     ui->Mesh_Error->hide();
     ui->MeshError_Label->hide();
 }
 
 MainWindow::~MainWindow()
 {
+    QCoreApplication::quit();
+    delete helpWindow;
     delete ui;
 }
 
@@ -71,18 +74,6 @@ void MainWindow::on_SetProjectDir_Button_clicked()
 
 void MainWindow::on_BlockMesh_Button_clicked()
 {
-    /*
-    QProcess Mesh_Process;
-    ui->Mesh_Output->clear();
-    Mesh_Process.setCurrentReadChannel(QProcess::StandardOutput);
-    Mesh_Process.start("blockMesh");
-    //ui->Mesh_Output->append(Mesh_Process.readAllStandardOutput());
-    //QProcess* process = qobject_cast<QProcess*>(sender());
-    //   if (process)
-    //       ui->Mesh_Output->append(process->readAllStandardOutput());
-    Mesh_Process.waitForFinished(-1);
-    */
-
     ui->Mesh_Output->clear();
     ui->Mesh_Error->clear();
     QStringList args;
@@ -137,5 +128,35 @@ void MainWindow::on_SetBleDir_Button_clicked()
     QTextStream stream(&file);
     stream << ui->BlenderDir_LineEdit->text();
     file.close();
+}
+
+
+void MainWindow::on_HelpWindow_Button_clicked()
+{
+    /*
+     * Memory Leak ?
+     */
+    if(!isHelpWindowOpen)
+    {
+        helpWindow = new HelpWindow();
+        connect(helpWindow,SIGNAL(destroyed(QObject*)),this,SLOT(on_HelpWindow_closed()));
+        helpWindow->show();
+        isHelpWindowOpen=true;
+        qCritical() << "HelpWindow created";
+    }
+}
+
+void MainWindow::on_HelpWindow_closed()
+{
+    qCritical() << "HelpWindow destroyed";
+    isHelpWindowOpen=false;
+}
+
+void MainWindow::keyPressEvent(QKeyEvent *event)
+{
+    if(event->key() == Qt::Key_F1)
+    {
+        on_HelpWindow_Button_clicked();
+    }
 }
 
